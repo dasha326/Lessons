@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Урок 2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.js"></script>
+</head>
+<body>
+    <div class="container">
+        <section class="sample mt-5">
+            <div class="form-group mb-4">
+                <label for="input" class="form-label">Я найду тебя</label>
+                <input id="input" type="text" class="form-control" @input="coincidenceCounter($event.target.value)">
+            </div>
+            <p>Всего имен: {{ names.length }}</p>
+            <p>Совпадения: {{ coincidence }}</p>
+            <p v-for="name in currentNames">{{ name }}</p>
+        </section>
+    </div>
+    <script>
+        let sample = new Vue({
+            el: '.sample',
+            data: {
+                names: ["Василий", "Петр", "Григорий", "Инокентий"],
+                currentNames: ["Василий", "Петр", "Григорий", "Инокентий"],
+                //coincidence: this.names.length Todo: спросить почему names undefined
+                coincidence: 4
+            },
+            methods: {
+                coincidenceCounter(val){
+                    this.currentNames = this.names.filter(item => item.toLowerCase().includes(val.toLowerCase()));
+                    this.coincidence = this.names.filter(item => item.toLowerCase().includes(val.toLowerCase())).length
+                }
+            }
+        })
+    </script>
+</body>
+</html>
