@@ -1,6 +1,6 @@
 <template>
   <div class="form-group mb-3">
-    <label :for="'form-input-'+ id">{{label}}</label>
+    <label :for="'form-input-'+ id" class="form-label">{{label}}</label>
     <input :id="'form-input-'+ id" type="text" class="form-control" :placeholder="value">
   </div>
 </template>
