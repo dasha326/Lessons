@@ -20,7 +20,6 @@ export default {
     return {
       names: ["Василий", "Петр", "Григорий", "Инокентий"],
       currentNames: ["Василий", "Петр", "Григорий", "Инокентий"],
-      //coincidence: this.names.length Todo: спросить почему names undefined
       coincidence: 4
     }
   },

@@ -27,7 +27,6 @@
       <div class="add">
         <h6>Доп инфа</h6>
         <Input v-for="(fieldValue, fieldLabel, id) in addFields" :key="id+1" :label="fieldLabel" :value="fieldValue" :id="id+1" v-model="formFields[fieldLabel]"/>
-        <!--Todo: можно ли передать то что в key-->
         <!--Todo: почему v-model не работает?-->
         <!--<FormGroup label="Добавить поле" id="add" :value="addFieldText"/>-->
         <div class="form-group mb-3">
@@ -42,7 +41,7 @@
 </template>
 
 <script>
-import Input from './input.vue';
+import Input from '../components/input.vue';
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 
@@ -106,8 +105,8 @@ export default {
   methods: {
     addField(){
       if(this.addFieldText === '') return
-      this.addFields[this.addFieldText] = ''; //Todo: Почему Цифры в начале?
-      this.addFieldText === '' //Todo: не сработало
+      this.addFields[this.addFieldText] = '';
+      this.addFieldText = ''
     },
     async submit () {
       const result = await this.v$.$validate()

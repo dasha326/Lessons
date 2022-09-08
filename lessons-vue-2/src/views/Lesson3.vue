@@ -8,7 +8,7 @@
                v-show="isImgActive"
                :class="imgFilters"
                :style="imgStyles"
-          ><!--Todo: почему :show отличается от v-show-->
+          >
         </div>
       </div>
       <div class="col-6">
