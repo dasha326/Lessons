@@ -16,11 +16,14 @@
                 >
                     <td>{{ item.date }}</td>
                     <td>
+                        {{ item.delta * 2 }}
+
+                    </td>
+                    <td>
                         <v-text-field
                             v-model="item.delta"
                         ></v-text-field>
                     </td>
-                    <td>{{ item.delta2 }}</td>
                     <td>
                         <v-btn color="error"
                                 plain
@@ -77,7 +80,6 @@ export default {
         delRow(id){
             const elIndex = this.desserts.indexOf(this.desserts[id]);
             this.desserts.splice(elIndex, 1)
-            console.log(this.desserts)
         }
     },
     created() {
@@ -88,7 +90,7 @@ export default {
         dates.forEach((date, id) => {
             this.desserts.push({
                 date,
-                delta: this.getRandomFloat(-30, 30).toFixed(2),
+                delta: delta2[id] *2,
                 delta2: delta2[id],
             })
         })
