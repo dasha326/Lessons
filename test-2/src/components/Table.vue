@@ -16,12 +16,12 @@
                 >
                     <td>{{ item.date }}</td>
                     <td>
-                        {{ item.delta * 2 }}
+                        {{ item.delta2 * 2 }}
 
                     </td>
                     <td>
                         <v-text-field
-                            v-model="item.delta"
+                            :value="item.delta2"
                         ></v-text-field>
                     </td>
                     <td>
@@ -66,7 +66,9 @@ export default {
             return a;
         },
         renderThird(array) {
+            console.log(array)
             const centerPosition = array.indexOf(0);
+            console.log(array.indexOf(0))
             const result = array.map((el, index) => {
                 if(index < centerPosition) el = this.getRandomFloat(-30, -1).toFixed(2);
                 if(index > centerPosition) el = this.getRandomFloat(0, 30).toFixed(2);
