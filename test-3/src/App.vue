@@ -5,21 +5,21 @@
                 <div class="col-3">
                     <div class="from-group">
                         <label for="form-price">Цена</label>
-                        <input id="form-price" type="text" name="price" class="form-control" :value="price" @input="calc($event.target)">
+                        <input id="form-price" type="text" name="price" class="form-control" :value="price" @input="priceChange($event.target.value)">
                     </div>
                     <span class="badge rounded-pill">{{price}}</span>
                 </div>
                 <div class="col-3">
                     <div class="from-group">
                         <label for="form-qty">Кол-во</label>
-                        <input id="form-qty" type="text" name="qty" class="form-control" v-model="qty">
+                        <input id="form-qty" type="text" name="qty" class="form-control"  :value="qty" @input="qtyChange($event.target.value)">
                     </div>
                     <span class="badge rounded-pill">{{ qty }}</span>
                 </div>
                 <div class="col-3">
                     <div class="from-group">
                         <label for="form-amount">Сумма</label>
-                        <input id="form-amount" type="text" name="amount" class="form-control" v-model="amount">
+                        <input id="form-amount" type="text" name="amount" class="form-control"  :value="amount" @input="amountChange($event.target.value)">
                     </div>
                     <span class="badge rounded-pill">{{ amount }}</span>
                 </div>
@@ -65,21 +65,49 @@ export default {
             amount: 0,
             result: '',
             logs: [],
-            localStorage: 'пусто'
+            localStorage: 'пусто',
+            inputPlaces: ['price', 'qty', 'amount'],
         }
     },
     methods: {
         addLogs(val){
             this.logs.unshift(val);
         },
+        changePlaces(text){
+            console.log(33)
+            this.inputPlaces.push(...this.inputPlaces.splice(this.inputPlaces.indexOf(text),1));
+        },
         priceChange(value){
-            this.price = value;
+            this.changePlaces('price');
+            this.price = Number(value);
+            this.calculate();
             this.addLogs('Поменялось поле "Цена"');
-            if(this.qty === 0 && this.amount === 0) return;
-            // if (this.qty > 0 && ){
-            //     this.amount = value * this.qty
-            // }
-            // if()
+        },
+        qtyChange(value) {
+            this.changePlaces('qty');
+            this.qty = Number(value);
+            this.calculate();
+            this.addLogs('Поменялось поле "Кол-во"')
+        },
+        amountChange(value){
+            this.changePlaces('amount');
+            this.amount = Number(value);
+            this.calculate();
+            this.addLogs('Поменялось поле "Сумма"')
+        },
+        calculate() {
+            console.log(this.inputPlaces)
+            switch (this.inputPlaces[0]){
+                case 'qty':
+                    this.qty = this.amount / this.price
+                    break
+                case 'price':
+                    this.price = this.amount / this.qty
+                    break
+                case 'amount':
+                    this.amount = this.price * this.qty
+                    break
+            }
         },
         submit(){
             ++this.nonce;
@@ -104,14 +132,6 @@ export default {
                 this.addLogs('Получен результат нажатия кнопки')
             }, 1000)
         }
-    },
-    watch:{
-        qty(){
-            this.addLogs('Поменялось поле "Кол-во"')
-        },
-        amount(){
-            this.addLogs('Поменялось поле "Сумма"')
-        },
     },
     computed: {
         // price() {
