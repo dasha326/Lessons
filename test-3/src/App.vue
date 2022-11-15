@@ -66,7 +66,8 @@ export default {
             result: '',
             logs: [],
             localStorage: 'пусто',
-            inputPlaces: ['price', 'qty', 'amount'],
+            inputPlaces: [],
+            inputPlacesVariables: ['price', 'qty', 'amount'],
         }
     },
     methods: {
@@ -74,8 +75,11 @@ export default {
             this.logs.unshift(val);
         },
         changePlaces(text){
-            console.log(33)
-            this.inputPlaces.push(...this.inputPlaces.splice(this.inputPlaces.indexOf(text),1));
+            if(this.inputPlaces.length < 3) {
+                this.inputPlaces.push(text)
+            } else {
+                this.inputPlaces.push(...this.inputPlaces.splice(this.inputPlaces.indexOf(text),1));
+            }
         },
         priceChange(value){
             this.changePlaces('price');
@@ -96,17 +100,24 @@ export default {
             this.addLogs('Поменялось поле "Сумма"')
         },
         calculate() {
-            console.log(this.inputPlaces)
-            switch (this.inputPlaces[0]){
-                case 'qty':
-                    this.qty = this.amount / this.price
-                    break
-                case 'price':
-                    this.price = this.amount / this.qty
-                    break
-                case 'amount':
-                    this.amount = this.price * this.qty
-                    break
+            if(this.inputPlaces.length >= 2){
+                let parameter;
+                if(this.inputPlaces.length === 2){
+                    parameter = this.inputPlacesVariables.filter(x => !this.inputPlaces.includes(x))[0];
+                } else{
+                    parameter = this.inputPlaces[0];
+                }
+                switch (parameter){
+                    case 'qty':
+                        this.qty = this.amount / this.price;
+                        break;
+                    case 'price':
+                        this.price = this.amount / this.qty;
+                        break;
+                    case 'amount':
+                        this.amount = this.price * this.qty;
+                        break;
+                }
             }
         },
         submit(){
@@ -116,14 +127,14 @@ export default {
                 qty: this.qty,
                 amount: this.amount,
                 nonce: this.nonce
-            }
+            };
 
             const isEven = this.amount % 2 === 0;
             this.addLogs('Нажалась кнопка');
             setTimeout(()=>{
+                localStorage.setItem('items', JSON.stringify(itemsData));
+                this.localStorage = itemsData;
                 if(isEven){
-                    localStorage.setItem('items', JSON.stringify(itemsData));
-                    this.localStorage = itemsData
                     this.result = '{success:true}'
 
                 } else{
@@ -133,17 +144,6 @@ export default {
             }, 1000)
         }
     },
-    computed: {
-        // price() {
-        //     return this.amount / this.qty
-        // },
-        // qty() {
-        //     return this.amount / this.price
-        // },
-        // amount() {
-        //     return this.price * this.qty
-        // }
-    }
 }
 </script>
 
